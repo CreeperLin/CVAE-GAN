@@ -9,7 +9,8 @@ from keras.layers import Activation, LeakyReLU, ELU
 from keras.layers import Conv2D, Conv2DTranspose, UpSampling2D, BatchNormalization, GlobalAveragePooling2D
 from keras.optimizers import Adam
 from keras import backend as K
-from keras.applications.vgg16 import VGG16
+# from keras.applications.vgg16 import VGG16
+from keras.applications.vgg19 import VGG19
 from keras.models import load_model
 
 from .base import BaseModel
@@ -300,10 +301,10 @@ class CVAEGAN(BaseModel):
         """Originally network E is a GoogleNet, categorical information is mereged at the last FC layer of the E network
         """
         
-        def get_VGG16():
-            model_path = "./models/vgg16.h5py"
+        def get_VGG19():
+            model_path = "./models/vgg19.h5py"
             if not os.path.exists(model_path):
-                model = VGG16(weights="imagenet", include_top=False)
+                model = VGG19(weights="imagenet", include_top=False)
                 model.save(model_path)
             else:
                 model = load_model(model_path)
@@ -318,7 +319,7 @@ class CVAEGAN(BaseModel):
 
 
         x_inputs = Input(shape=self.input_shape)
-        base_model = get_VGG16()
+        base_model = get_VGG19()
 
         x = base_model(x_inputs)
         x = Flatten()(x)
