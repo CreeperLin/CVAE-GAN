@@ -22,7 +22,7 @@ def main():
     parser.add_argument('--datasize', type=int, default=-1)
     parser.add_argument('--output', default='output')
     parser.add_argument('--zdims', type=int, default=1024)
-    parser.add_argument('--gpu', type=int, default=0)
+    parser.add_argument('--gpu', type=str, default='0,1')
     parser.add_argument('--resume', type=str, default=None)
     parser.add_argument('--testmode', action='store_true')
 

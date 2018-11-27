@@ -96,7 +96,9 @@ class BaseModel(metaclass=ABCMeta):
         Get batch from datasets
         '''
         images = datasets.images[indx]
+        print(np.shape(images))
         attrs = datasets.attrs[indx]
+        print(np.shape(attrs))
 
         return images, attrs
 

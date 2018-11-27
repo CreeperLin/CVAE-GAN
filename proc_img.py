@@ -21,12 +21,12 @@ def main():
         os.makedirs(data_dir)
 
     # imagenet_dir = '../imagenet/imagenet_test'
-    imagenet_dir = '../imagenet/imagenet_train_par'
+    imagenet_dir = '../../imagenet/ILSVRC2012_img_train_par'
     store_img(imagenet_dir,savedir=data_dir,savename='orig_img_par')
 
 
 def get_category_id(image_filename):
-    return int(image_filename.split('/')[-2][-8:])
+    return int(image_filename.split('\\')[-2][-8:])
 
 def get_image_id(image_filename):
     img_id = int(image_filename.split('_')[-1][:-5])

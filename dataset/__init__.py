@@ -6,11 +6,12 @@ import numpy as np
 from keras.utils import to_categorical
 
 data_path='./data'
+train_sub_dir = 'train_par'
 # tr_data_name = 'orig_image_val_label.pkl'
 tr_prefix = 'orig_img_par'
 ts_prefix = 'orig_img_test'
-tr_img_path = os.path.join(data_path,'train',tr_prefix+'_data.pkl')
-tr_label_path = os.path.join(data_path,'train',tr_prefix+'_label.pkl')
+tr_img_path = os.path.join(data_path,train_sub_dir,tr_prefix+'_data.pkl')
+tr_label_path = os.path.join(data_path,train_sub_dir,tr_prefix+'_label.pkl')
 tr_id_path = os.path.join(data_path,'train',tr_prefix+'_id.pkl')
 ts_path = os.path.join(data_path,'test',ts_prefix)
 
@@ -77,12 +78,23 @@ def load_data(dataset):
     # ts_img = ts_data[:,0]
     # ts_label = tr_data[:,2]
 
-    print(np.unique(tr_label))
+    num_class = np.unique(tr_label)
+    print('num class',num_class)
     tr_label = [idx_map[i] for i in tr_label]
-    print(np.unique(tr_label))
     tr_label_enc = to_categorical(tr_label, num_classes=1000)
     print(np.shape(tr_label_enc))
 
-    return Dataset(tr_img,tr_label_enc,label_nm)
+    label_nm_real = []
+    tr_label_enc_real = []
+    for i in range(0,1000):
+        if not (np.sum(tr_label_enc[:,i])==0):
+            tr_label_enc_real.append(tr_label_enc[:,i])
+            label_nm_real.append(label_nm[i])
+        
+    tr_label_enc_real = np.array(tr_label_enc_real).T
+    print(tr_label_enc_real[0])
+    print(np.shape(tr_label_enc_real))
+
+    return Dataset(tr_img,tr_label_enc_real,label_nm_real)
 
 
