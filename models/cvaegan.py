@@ -9,8 +9,8 @@ from keras.layers import Activation, LeakyReLU, ELU
 from keras.layers import Conv2D, Conv2DTranspose, UpSampling2D, BatchNormalization, GlobalAveragePooling2D
 from keras.optimizers import Adam
 from keras import backend as K
-# from keras.applications.vgg16 import VGG16
-from keras.applications.vgg19 import VGG19
+from keras.applications.vgg16 import VGG16
+# from keras.applications.vgg19 import VGG19
 from keras.models import load_model
 
 from .base import BaseModel
@@ -178,7 +178,7 @@ class CVAEGAN(BaseModel):
         x_dummy = np.zeros(x_r.shape, dtype='float32')
         c_dummy = np.zeros(c.shape, dtype='float32')
         z_dummy = np.zeros(z_p.shape, dtype='float32')
-        y_dummy = np.zeros((batchsize, 1), dtype='float32')
+        y_dummy = np.zeros((batchsize, 8,8,1), dtype='float32')
         f_dummy = np.zeros((batchsize, 8192), dtype='float32')
 
         # Train autoencoder
@@ -230,6 +230,10 @@ class CVAEGAN(BaseModel):
         y_f, f_D_x_f = self.f_dis(x_f)
         y_p, f_D_x_p = self.f_dis(x_p)
 
+        y_r = Reshape((8,8,1))(y_r)
+        y_f = Reshape((8,8,1))(y_f)
+        y_p = Reshape((8,8,1))(y_p)
+
         d_loss = DiscriminatorLossLayer()([y_r, y_f, y_p])
 
         c_r, f_C_x_r = self.f_cls(x_r)
@@ -278,6 +282,7 @@ class CVAEGAN(BaseModel):
         self.dec_trainer.compile(loss=[zero_loss, zero_loss, zero_loss],
                                  optimizer=Adam(lr=2.0e-4, beta_1=0.5),
                                  metrics=[generator_accuracy(y_p, y_f)])
+        self.dec_trainer.summary()
 
         # Build autoencoder
         set_trainable(self.f_enc, True)
@@ -301,10 +306,10 @@ class CVAEGAN(BaseModel):
         """Originally network E is a GoogleNet, categorical information is mereged at the last FC layer of the E network
         """
         
-        def get_VGG19():
-            model_path = "./models/vgg19.h5py"
+        def get_VGG16():
+            model_path = "./models/vgg16.h5py"
             if not os.path.exists(model_path):
-                model = VGG19(weights="imagenet", include_top=False)
+                model = VGG16(weights="imagenet", include_top=False)
                 model.save(model_path)
             else:
                 model = load_model(model_path)
@@ -315,11 +320,13 @@ class CVAEGAN(BaseModel):
                 else:
                     layer.trainable = True
 
+            # model.compile(optimizer='adam',loss=zero_loss)
+
             return model
 
 
         x_inputs = Input(shape=self.input_shape)
-        base_model = get_VGG19()
+        base_model = get_VGG16()
 
         x = base_model(x_inputs)
         x = Flatten()(x)

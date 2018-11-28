@@ -20,13 +20,13 @@ def main():
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
 
-    # imagenet_dir = '../imagenet/imagenet_test'
-    imagenet_dir = '../../imagenet/ILSVRC2012_img_train_par'
+    imagenet_dir = '../imagenet/imagenet_test'
+    # imagenet_dir = '../imagenet/imagenet_train_par'
     store_img(imagenet_dir,savedir=data_dir,savename='orig_img_par')
 
 
 def get_category_id(image_filename):
-    return int(image_filename.split('\\')[-2][-8:])
+    return int(image_filename.split('/')[-2][-8:])
 
 def get_image_id(image_filename):
     img_id = int(image_filename.split('_')[-1][:-5])
@@ -37,7 +37,8 @@ def get_img(images):
         images = [images]
 
     num_images = len(images)
-    (h, w) = 224,224
+    # (h, w) = 224,224
+    (h, w) = 128,128
     img_all = []
 
     for k in range(0,num_images):

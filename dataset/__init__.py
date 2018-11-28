@@ -6,7 +6,7 @@ import numpy as np
 from keras.utils import to_categorical
 
 data_path='./data'
-train_sub_dir = 'train_par'
+train_sub_dir = 'train'
 # tr_data_name = 'orig_image_val_label.pkl'
 tr_prefix = 'orig_img_par'
 ts_prefix = 'orig_img_test'

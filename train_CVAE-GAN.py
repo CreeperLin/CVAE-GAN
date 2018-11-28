@@ -18,11 +18,11 @@ def main():
     parser = argparse.ArgumentParser(description='Training GANs or VAEs')
     parser.add_argument('--dataset', type=str, default='fmri')
     parser.add_argument('--epoch', type=int, default=200)
-    parser.add_argument('--batchsize', type=int, default=20)
+    parser.add_argument('--batchsize', type=int, default=5)
     parser.add_argument('--datasize', type=int, default=-1)
     parser.add_argument('--output', default='output')
     parser.add_argument('--zdims', type=int, default=1024)
-    parser.add_argument('--gpu', type=str, default='0,1')
+    parser.add_argument('--gpu', type=str, default='0')
     parser.add_argument('--resume', type=str, default=None)
     parser.add_argument('--testmode', action='store_true')
 
