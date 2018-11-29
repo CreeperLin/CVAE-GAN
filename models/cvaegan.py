@@ -230,10 +230,6 @@ class CVAEGAN(BaseModel):
         y_f, f_D_x_f = self.f_dis(x_f)
         y_p, f_D_x_p = self.f_dis(x_p)
 
-        y_r = Reshape((8,8,1))(y_r)
-        y_f = Reshape((8,8,1))(y_f)
-        y_p = Reshape((8,8,1))(y_p)
-
         d_loss = DiscriminatorLossLayer()([y_r, y_f, y_p])
 
         c_r, f_C_x_r = self.f_cls(x_r)

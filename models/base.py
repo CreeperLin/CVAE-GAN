@@ -88,7 +88,7 @@ class BaseModel(metaclass=ABCMeta):
 
             print('')
             # Save current weights
-            self.save_model(wgt_out_dir, e + 1)
+            # self.save_model(wgt_out_dir, e + 1)
 
 
     def make_batch(self, datasets, indx):
@@ -96,9 +96,7 @@ class BaseModel(metaclass=ABCMeta):
         Get batch from datasets
         '''
         images = datasets.images[indx]
-        print(np.shape(images))
         attrs = datasets.attrs[indx]
-        print(np.shape(attrs))
 
         return images, attrs
 

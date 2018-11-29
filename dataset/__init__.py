@@ -49,7 +49,7 @@ def load_pkl(path):
         exit(0)
 
 
-def load_data(dataset):
+def load_data(img_data=None,img_cat=None,img_id=None):
 
     label_name_path = os.path.join(data_path,'idx1000.txt')
     label_nm = []
@@ -65,13 +65,26 @@ def load_data(dataset):
                 idx_map[nid] = idx
 
 
-    tr_img = load_pkl(tr_img_path)
+    if img_data is None:
+        tr_img = load_pkl(tr_img_path)
+    else:
+        tr_img = img_data
+
     print(np.shape(tr_img))
 
     # tr_img = tr_img / 255.0
-    tr_label = load_pkl(tr_label_path)
+    if img_cat is None:
+        tr_label = load_pkl(tr_label_path)
+    else:
+        tr_label = img_cat
+
     print(np.shape(tr_label))
-    tr_id = load_pkl(tr_id_path)
+
+    if img_id is None:
+        tr_id = load_pkl(tr_id_path)
+    else:
+        tr_id = img_id
+
     print(np.shape(tr_id))
 
     # ts_data = load_pkl(ts_path)

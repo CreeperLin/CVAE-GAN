@@ -12,16 +12,17 @@ matplotlib.use('Agg')
 from models.cvaegan import CVAEGAN
 # from dataset.load_data import load_data
 from dataset import load_data
+from proc_img import proc
 
 def main():
     # Parsing arguments
     parser = argparse.ArgumentParser(description='Training GANs or VAEs')
     parser.add_argument('--dataset', type=str, default='fmri')
     parser.add_argument('--epoch', type=int, default=200)
-    parser.add_argument('--batchsize', type=int, default=5)
+    parser.add_argument('--batchsize', type=int, default=20)
     parser.add_argument('--datasize', type=int, default=-1)
     parser.add_argument('--output', default='output')
-    parser.add_argument('--zdims', type=int, default=1024)
+    parser.add_argument('--zdims', type=int, default=64)
     parser.add_argument('--gpu', type=str, default='0')
     parser.add_argument('--resume', type=str, default=None)
     parser.add_argument('--testmode', action='store_true')
@@ -36,7 +37,9 @@ def main():
         os.mkdir(args.output)
 
     # Load datasets
-    datasets = load_data(args.dataset)
+    img_data, img_cat, img_id = proc(save=False)
+    print('img processed')
+    datasets = load_data(img_data, img_cat, img_id)
 
     print(datasets.images.shape[1:])
     model = CVAEGAN(
